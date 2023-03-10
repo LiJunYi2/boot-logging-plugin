@@ -72,9 +72,9 @@ public class LogInfoWriteServiceImpl implements IOperationLogService {
 2023-03-10 16:30:09.256  INFO 4820 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2023-03-10 16:30:09.257  INFO 4820 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
 设置自己对应系统用户信息
-获取到一一条操作日志:BaseLogEntity(id=null, operateModule=用户模块, businessType=1, requestUrl=/log/user, method=com.example.test.controller.TestController.queryUser(), requestMethod=GET, requestParam={"userName":["zhangsan"]}, operatorType=0, operateUserId=200, operateUserName=占山, operateDeptName=六处, operateIp=192.168.187.1, operateDescription=查询用户操作, errorMsg=null, jsonResult={"operateUserName":"zhangsan"}, operateTime=Fri Mar 10 16:30:09 CST 2023)
+得到一条系统操作日志:BaseLogEntity(id=null, operateModule=用户模块, businessType=1, requestUrl=/log/user, method=com.example.test.controller.TestController.queryUser(), requestMethod=GET, requestParam={"userName":["zhangsan"]}, operatorType=0, operateUserId=200, operateUserName=占山, operateDeptName=六处, operateIp=192.168.187.1, operateDescription=查询用户操作, errorMsg=null, jsonResult={"operateUserName":"zhangsan"}, operateTime=Fri Mar 10 16:30:09 CST 2023)
 设置自己对应系统用户信息
-获取到一一条操作日志:BaseLogEntity(id=null, operateModule=用户模块, businessType=2, requestUrl=/log/save, method=com.example.test.controller.TestController.saveUser(), requestMethod=POST, requestParam={}, operatorType=0, operateUserId=200, operateUserName=占山, operateDeptName=六处, operateIp=192.168.187.1, operateDescription=保存用户信息, errorMsg=null, jsonResult={}, operateTime=Fri Mar 10 16:30:19 CST 2023)
+得到一条系统操作日志:BaseLogEntity(id=null, operateModule=用户模块, businessType=2, requestUrl=/log/save, method=com.example.test.controller.TestController.saveUser(), requestMethod=POST, requestParam={}, operatorType=0, operateUserId=200, operateUserName=占山, operateDeptName=六处, operateIp=192.168.187.1, operateDescription=保存用户信息, errorMsg=null, jsonResult={}, operateTime=Fri Mar 10 16:30:19 CST 2023)
 
 ```
 
