@@ -7,7 +7,44 @@
 
 ### 使用方式
 
-##### 1、引入依赖
+##### 1、表结构参考
+
+```sql
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for t_log
+-- ----------------------------
+DROP TABLE IF EXISTS `t_log`;
+CREATE TABLE `t_log`  (
+  `id` bigint(20) NOT NULL COMMENT '日志主键',
+  `operate_module` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作模块',
+  `business_type` int(2) NULL DEFAULT NULL COMMENT '业务类型,根据自己的业务自定义类型，例如:0=其它,1=新增,2=修改,3=删除......',
+  `request_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '请求url',
+  `method` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '方法名称',
+  `request_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '请求方式',
+  `request_param` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '请求参数',
+  `operator_type` int(2) NULL DEFAULT NULL COMMENT '操作者类别',
+  `operate_user_id` bigint(20) NULL DEFAULT NULL COMMENT '操作者id',
+  `operate_user_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作者用户名',
+  `operate_dept_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作者部门名',
+  `operate_ip` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作者ip地址',
+  `operate_description` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作描述',
+  `error_msg` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '错误信息',
+  `json_result` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '返回参数',
+  `operate_time` datetime NULL DEFAULT NULL COMMENT '操作时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_log
+-- ----------------------------
+
+SET FOREIGN_KEY_CHECKS = 1;
+```
+
+##### 2、引入依赖
 
 ```xml
 <dependency>
@@ -24,7 +61,7 @@
 </dependency>
 ```
 
-##### 2、实现`IOperationLogService`接口
+##### 3、实现`IOperationLogService`接口
 
 ```java
 /**
@@ -64,7 +101,7 @@ public class LogInfoWriteServiceImpl implements IOperationLogService {
 }
 ```
 
-##### 3、测试接口
+##### 4、测试接口
 
 ```java
 /**
@@ -109,7 +146,7 @@ public class TestController {
 
 ```
 
-##### 4、测试结果
+##### 5、测试结果
 
 ```shell
 2023-03-13 12:05:11.350  INFO 18780 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
