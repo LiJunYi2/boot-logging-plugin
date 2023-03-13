@@ -2,6 +2,7 @@ package io.github.loggingplugin.entity;
 
 import lombok.Data;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 /**
  * @version 1.0.0
@@ -11,6 +12,7 @@ import lombok.ToString;
  * @create: 2023/3/9 16:11
  */
 @Data
+@Accessors(chain = true)
 @ToString
 public class BaseUserEntity {
 

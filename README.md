@@ -1,13 +1,13 @@
 # boot-logging-plugin
-springboot项目记录系统操作日志插件，引入即用
+记录系统操作日志以及脱敏插件，即入即用
 
 ### 项目描述
 
-在项目开发过程中，记录系统用户操作日志必不可少，不免存在每个项目都要去写一遍有关系统日志记录的方法。为了节省开发过程中这一块的时间，于是造出了**boot-logging-plugin** 插件，用于记录系统日志。
+在项目开发过程中，记录系统用户操作日志必不可少，不免存在每个项目都要去写一遍有关系统日志记录的方法。为了节省开发过程中这一块的时间，于是造出了**boot-logging-plugin** 插件，用于记录系统日志，同时加入了脱敏注解，依赖`jackson`实现对敏感数据进行脱敏处理。
 
 ### 使用方式
 
-###### 1、引入依赖
+##### 1、引入依赖
 
 ```xml
 <dependency>
@@ -24,7 +24,7 @@ springboot项目记录系统操作日志插件，引入即用
 </dependency>
 ```
 
-###### 2、实现`IOperationLogService`接口
+##### 2、实现`IOperationLogService`接口
 
 ```java
 /**
@@ -55,26 +55,141 @@ public class LogInfoWriteServiceImpl implements IOperationLogService {
     @Override
     public BaseUserEntity getSysUserInfo() {
         System.out.println("设置自己对应系统用户信息");
-        BaseUserEntity sysUser = new BaseUserEntity();
-        sysUser.setOperateUserName("占山");
-        sysUser.setOperateUserId(200L);
-        sysUser.setOperatorType(1);
-        sysUser.setOperateDeptName("六处");
-        return sysUser;
+        return new BaseUserEntity()
+            .setOperateUserName("占山")
+            .setOperateUserId(200L)
+            .setOperatorType(1)
+            .setOperateDeptName("六处");
     }
 }
 ```
 
-###### 3、测试结果
+##### 3、测试接口
 
-```shell
-2023-03-10 16:30:09.256  INFO 4820 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2023-03-10 16:30:09.256  INFO 4820 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2023-03-10 16:30:09.257  INFO 4820 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-设置自己对应系统用户信息
-得到一条系统操作日志:BaseLogEntity(id=null, operateModule=用户模块, businessType=1, requestUrl=/log/user, method=com.example.test.controller.TestController.queryUser(), requestMethod=GET, requestParam={"userName":["zhangsan"]}, operatorType=0, operateUserId=200, operateUserName=占山, operateDeptName=六处, operateIp=192.168.187.1, operateDescription=查询用户操作, errorMsg=null, jsonResult={"operateUserName":"zhangsan"}, operateTime=Fri Mar 10 16:30:09 CST 2023)
-设置自己对应系统用户信息
-得到一条系统操作日志:BaseLogEntity(id=null, operateModule=用户模块, businessType=2, requestUrl=/log/save, method=com.example.test.controller.TestController.saveUser(), requestMethod=POST, requestParam={}, operatorType=0, operateUserId=200, operateUserName=占山, operateDeptName=六处, operateIp=192.168.187.1, operateDescription=保存用户信息, errorMsg=null, jsonResult={}, operateTime=Fri Mar 10 16:30:19 CST 2023)
+```java
+/**
+ * @version 1.0.0
+ * @className: TestController
+ * @description:
+ * @author: LiJunYi
+ * @create: 2023/3/10 16:09
+ */
+@RestController
+@RequestMapping("log")
+public class TestController {
+
+    /**
+     * 查询用户接口参数测试
+     *
+     * @param userName 用户名
+     * @return {@link BaseUserEntity}
+     */
+    @GetMapping("user")
+    @SysLog(operateModule = "用户模块",businessType = 1,operateDescription = "查询用户操作")
+    public BaseUserEntity queryUser(String userName)
+    {
+        BaseUserEntity user = new BaseUserEntity();
+        user.setOperateUserName(userName);
+        return user;
+    }
+
+    /**
+     * 保存用户接口Body参数测试
+     *
+     * @param user user
+     * @return {@link BaseUserEntity}
+     */
+    @PostMapping("save")
+    @SysLog(operateModule = "用户模块",businessType = 2,operateDescription = "保存用户信息")
+    public BaseUserEntity saveUser(@RequestBody BaseUserEntity user)
+    {
+        return user;
+    }
+}
 
 ```
 
+##### 4、测试结果
+
+```shell
+2023-03-13 12:05:11.350  INFO 18780 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-03-13 12:05:11.350  INFO 18780 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-03-13 12:05:11.350  INFO 18780 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+设置自己对应系统用户信息
+获取到一一条操作日志:BaseLogEntity(id=null, operateModule=用户模块, businessType=2, requestUrl=/log/save, method=com.example.test.controller.TestController.saveUser(), requestMethod=POST, requestParam={"operateDeptName":"研发部","operateIp":"127.0.0.1","operateUserId":2,"operateUserName":"POST测试","operatorType":1}, operatorType=0, operateUserId=200, operateUserName=占山, operateDeptName=六处, operateIp=192.168.187.1, operateDescription=保存用户信息, errorMsg=, jsonResult={"operateDeptName":"研发部","operateIp":"127.0.0.1","operateUserId":2,"operateUserName":"POST测试","operatorType":1}, operateTime=Mon Mar 13 12:05:11 CST 2023)
+设置自己对应系统用户信息
+获取到一一条操作日志:BaseLogEntity(id=null, operateModule=用户模块, businessType=1, requestUrl=/log/user, method=com.example.test.controller.TestController.queryUser(), requestMethod=GET, requestParam={"userName":"zhangsan"}, operatorType=0, operateUserId=200, operateUserName=占山, operateDeptName=六处, operateIp=192.168.187.1, operateDescription=查询用户操作, errorMsg=, jsonResult={"operateUserName":"zhangsan"}, operateTime=Mon Mar 13 12:06:52 CST 2023)
+
+```
+
+### 脱敏注解@Sensitive
+
+```java
+/**
+ * @version 1.0.0
+ * @className: Person
+ * @description: 用户类
+ * @author: LiJunYi
+ * @create: 2023/3/13 10:13
+ */
+@Data
+public class Person {
+
+    /**
+     * 姓名脱敏
+     */
+    @Sensitive(strategy = SensitiveStrategy.USERNAME)
+    private String userName;
+
+    /**
+     * 密码
+     */
+    @Sensitive(strategy = SensitiveStrategy.PASSWORD)
+    private String password;
+
+    /**
+     * 电子邮件
+     */
+    @Sensitive(strategy = SensitiveStrategy.EMAIL)
+    private String email;
+
+    /**
+     * 手机号脱敏
+     */
+    @Sensitive(strategy = SensitiveStrategy.PHONE)
+    private String phone;
+
+    /**
+     * 身份证号码脱敏
+     */
+    @Sensitive(strategy = SensitiveStrategy.ID_CARD)
+    private String idCard;
+
+    /**
+     * 银行卡
+     */
+    @Sensitive(strategy = SensitiveStrategy.BANK_CARD)
+    private String bankCard;
+
+    /**
+     * 地址信息脱敏
+     */
+    @Sensitive(strategy = SensitiveStrategy.ADDRESS)
+    private String address;
+}
+
+```
+
+##### 测试结果
+
+```json
+{
+	"userName": "不*人",
+	"password": "************",
+	"email": "2****@163.com",
+	"phone": "187****1111",
+	"idCard": "2314****3623",
+	"bankCard": "622202****6744",
+	"address": "浙江省****市余****"
+}
+```
