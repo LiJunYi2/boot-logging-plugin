@@ -11,16 +11,16 @@
 
     <groupId>io.github.LiJunYi2</groupId>
     <artifactId>boot-logging-plugin</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.3</version>
     <name>boot-logging-plugin</name>
-    <description>基于aop实现的系统日志插件</description>
+    <description>基于aop实现的系统日志以及脱敏插件，引入即用</description>
     <url>https://github.com/LiJunYi2/boot-logging-plugin</url>
 
     <properties>
         <compiler.source>1.8</compiler.source>
         <java.version>${compiler.source}</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <fastjson2.version>2.0.24</fastjson2.version>
+        <fastjson2.version>2.0.25</fastjson2.version>
     </properties>
 
     <dependencies>

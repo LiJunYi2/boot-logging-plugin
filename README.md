@@ -34,6 +34,7 @@ CREATE TABLE `t_log`  (
   `error_msg` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '错误信息',
   `json_result` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '返回参数',
   `operate_time` datetime NULL DEFAULT NULL COMMENT '操作时间',
+  `cost_time` bigint(20) NULL DEFAULT 0 COMMENT '消耗时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -153,9 +154,9 @@ public class TestController {
 2023-03-13 12:05:11.350  INFO 18780 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2023-03-13 12:05:11.350  INFO 18780 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
 设置自己对应系统用户信息
-获取到一一条操作日志:BaseLogEntity(id=null, operateModule=用户模块, businessType=2, requestUrl=/log/save, method=com.example.test.controller.TestController.saveUser(), requestMethod=POST, requestParam={"operateDeptName":"研发部","operateIp":"127.0.0.1","operateUserId":2,"operateUserName":"POST测试","operatorType":1}, operatorType=0, operateUserId=200, operateUserName=占山, operateDeptName=六处, operateIp=192.168.187.1, operateDescription=保存用户信息, errorMsg=, jsonResult={"operateDeptName":"研发部","operateIp":"127.0.0.1","operateUserId":2,"operateUserName":"POST测试","operatorType":1}, operateTime=Mon Mar 13 12:05:11 CST 2023)
+获取到一一条操作日志:BaseLogEntity(id=null, operateModule=用户模块, businessType=2, requestUrl=/log/save, method=com.example.test.controller.TestController.saveUser(), requestMethod=POST, requestParam={"operateDeptName":"研发部","operateIp":"127.0.0.1","operateUserId":2,"operateUserName":"POST测试","operatorType":1}, operatorType=0, operateUserId=200, operateUserName=占山, operateDeptName=六处, operateIp=192.168.187.1, operateDescription=保存用户信息, errorMsg=, jsonResult={"operateDeptName":"研发部","operateIp":"127.0.0.1","operateUserId":2,"operateUserName":"POST测试","operatorType":1}, operateTime=Tue Mar 14 09:43:56 CST 2023, costTime=1)
 设置自己对应系统用户信息
-获取到一一条操作日志:BaseLogEntity(id=null, operateModule=用户模块, businessType=1, requestUrl=/log/user, method=com.example.test.controller.TestController.queryUser(), requestMethod=GET, requestParam={"userName":"zhangsan"}, operatorType=0, operateUserId=200, operateUserName=占山, operateDeptName=六处, operateIp=192.168.187.1, operateDescription=查询用户操作, errorMsg=, jsonResult={"operateUserName":"zhangsan"}, operateTime=Mon Mar 13 12:06:52 CST 2023)
+获取到一一条操作日志:BaseLogEntity(id=null, operateModule=用户模块, businessType=1, requestUrl=/log/user, method=com.example.test.controller.TestController.queryUser(), requestMethod=GET, requestParam={"userName":"zhangsan"}, operatorType=0, operateUserId=200, operateUserName=占山, operateDeptName=六处, operateIp=192.168.187.1, operateDescription=查询用户操作, errorMsg=, jsonResult={"operateUserName":"zhangsan"}, operateTime=Tue Mar 14 09:43:58 CST 2023, costTime=1)
 
 ```
 

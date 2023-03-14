@@ -101,4 +101,9 @@ public class BaseLogEntity implements Serializable {
      * 操作时间
      */
     private Date operateTime;
+
+    /**
+     * 消耗时间
+     */
+    private Long costTime;
 }
